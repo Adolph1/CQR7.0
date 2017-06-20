@@ -110,35 +110,6 @@ class DepartmentController extends Controller
         return $this->redirect(['index']);
     }
 
-
-
-    //filter branch department
-
-
-    public function actionFilter($id)
-    {
-            $countTypes = Department::find()
-                ->where(['branch_id' => $id])
-                ->count();
-
-            $types = Department::find()
-                ->where(['branch_id' => $id])
-                ->orderBy('dept_name ASC')
-                ->all();
-
-            if ($countTypes > 0) {
-                echo "<option value=''>" . "--Select--" . "</option>";
-                foreach ($types as $type) {
-
-                    echo "<option value='" . $type->id . "'>" .$type->dept_name."</option>";
-                }
-            } else {
-                echo "<option value=''>" . "--Select--" . "</option>";
-            }
-
-
-    }
-
     /**
      * Finds the Department model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

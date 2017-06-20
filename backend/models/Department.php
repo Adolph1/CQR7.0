@@ -10,13 +10,13 @@ use yii\helpers\ArrayHelper;
  *
  * @property integer $id
  * @property string $dept_name
- * @property integer $branch_id
+ * @property integer $parent
  * @property string $status
  * @property string $maker_id
  * @property string $maker_time
  *
- * @property TblBranch $branch
- * @property TblShelve[] $tblShelves
+ * @property TblDepartmentModuleActivity[] $tblDepartmentModuleActivities
+ * @property TblEmployee[] $tblEmployees
  */
 class Department extends \yii\db\ActiveRecord
 {
@@ -35,11 +35,10 @@ class Department extends \yii\db\ActiveRecord
     {
         return [
             [['dept_name'], 'required'],
-            [['branch_id'], 'integer'],
+            [['parent'], 'integer'],
             [['maker_time'], 'safe'],
             [['dept_name', 'maker_id'], 'string', 'max' => 200],
             [['status'], 'string', 'max' => 1],
-            [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branch::className(), 'targetAttribute' => ['branch_id' => 'id']],
         ];
     }
 
@@ -51,7 +50,7 @@ class Department extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'dept_name' => Yii::t('app', 'Department Name'),
-            'branch_id' => Yii::t('app', 'Branch '),
+            'parent' => Yii::t('app', 'Parent'),
             'status' => Yii::t('app', 'Status'),
             'maker_id' => Yii::t('app', 'Maker ID'),
             'maker_time' => Yii::t('app', 'Maker Time'),
@@ -61,11 +60,10 @@ class Department extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBranch()
+    public function getTblDepartmentModuleActivities()
     {
-        return $this->hasOne(Branch::className(), ['id' => 'branch_id']);
+        return $this->hasMany(DepartmentModuleActivity::className(), ['department_id' => 'id']);
     }
-
 
     //gets all departments
 
@@ -77,8 +75,12 @@ class Department extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getTblShelves()
+    public function getTblEmployees()
     {
-        return $this->hasMany(Shelve::className(), ['dept_id' => 'id']);
+        return $this->hasMany(Employee::className(), ['department_id' => 'id']);
+    }
+    public function getDepartment()
+    {
+        return $this->hasOne(Department::className(), ['id' => 'parent']);
     }
 }

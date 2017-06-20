@@ -73,9 +73,9 @@ desired effect
         <!-- Logo -->
         <a href="/" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>KCB</b>DC</span>
+            <span class="logo-mini"><b>CRM</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>KCB DOC</b></span>
+            <span class="logo-lg"><b>CRM</b></span>
         </a>
 
         <!-- Header Navbar -->
@@ -208,50 +208,86 @@ desired effect
                     "items" => [
                         ["label" =>Yii::t('app','Home'), "url" =>  Yii::$app->homeUrl, "icon" => "home"],
 
-                        ["label" =>Yii::t('app','Files'), "url" =>  ["/item/index"], "icon" => "fa fa-folder-o",],
-
-                        ["label" =>Yii::t('app','Shelves'), "url" =>  ["/shelve/index"], "icon" => "fa fa-building",],
-
-
                         [
-                            "label" =>Yii::t('app','Branches'),
-                            "url" =>  "#",
-                            "icon" => "fa fa-sitemap",
-                            "items" => [
-                                [
+                                "label" =>Yii::t('app','Cases'),
+                                "url" =>  "#",
+                                "icon" => "fa fa-folder-o",
+                                "items" => [
+
+                                    [
                                     'visible' => (Yii::$app->user->identity->username == 'admin'),
-                                    "label" => Yii::t('app','Branches'),
-                                    "url" =>["/branch/index"],
-                                    "icon" => "fa fa-angle-double-right",
-                                ],
-                                [
+                                    "label" => "New Case",
+                                    "url" => ["/customer-case/create"],
+                                    "icon" => "fa fa-lightbulb-o",
+                                    ],
+                                    [
                                     'visible' => (Yii::$app->user->identity->username == 'admin'),
-                                    "label" => Yii::t('app','Departments'),
-                                    "url" =>["/department/index"],
-                                    "icon" => "fa fa-angle-double-right",
-                                ],
+                                    "label" => "Case Sources",
+                                    "url" => ["/case-source/index"],
+                                    "icon" => "fa fa-lightbulb-o",
+                                    ],
+                                    [
+                                        'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                        "label" => "Case Types",
+                                        "url" => ["/case-type/index"],
+                                        "icon" => "fa fa-lightbulb-o",
+                                    ],
+                                    [
+                                        'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                        "label" => "Case priorities",
+                                        "url" => ["/case-priority/index"],
+                                        "icon" => "fa fa-lightbulb-o",
+                                    ],
+
                                 ],
 
                         ],
 
-                        ["label" =>Yii::t('app','Locations'), "url" =>  ["/location/index"], "icon" => "fa fa-sitemap",],
-
-
-
-
                         [
                             'visible' => (Yii::$app->user->identity->username == 'admin'),
-                            "label" =>Yii::t('app','Settings'),
+                            "label" =>Yii::t('app','Admin'),
                             "url" => "#",
                             "icon" => "fa fa-gears",
                             "items" => [
 
                                 [
                                     'visible' => (Yii::$app->user->identity->username == 'admin'),
-                                    "label" => "Backup",
-                                    "url" => ["/backup"],
-                                    "icon" => "fa fa-angle-double-right",
+                                    "label" => "System Activities",
+                                    "url" => ["/module-activity/index"],
+                                    "icon" => "fa fa-user",
                                 ],
+                                [
+                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                    "label" => "System Modules",
+                                    "url" => ["/system-module/index"],
+                                    "icon" => "fa fa-user",
+                                ],
+                                [
+                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                    "label" => "Branches",
+                                    "url" => ["/branch/index"],
+                                    "icon" => "fa fa-user",
+                                ],
+                                [
+                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                    "label" => "Departments",
+                                    "url" => ["/department/index"],
+                                    "icon" => "fa fa-user",
+                                ],
+                                [
+                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                    "label" => "Departments Activities",
+                                    "url" => ["/department-module-activity/index"],
+                                    "icon" => "fa fa-user",
+                                ],
+                                [
+                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                    "label" => "Employees",
+                                    "url" => ["/employee/index"],
+                                    "icon" => "fa fa-user",
+                                ],
+
+
                                 [
                                     'visible' => (Yii::$app->user->identity->username == 'admin'),
                                     "label" => "Users",
@@ -271,6 +307,7 @@ desired effect
                                     'url' => ['/role/index'],
                                     'icon' => 'fa fa-lock',
                                 ],
+
 
                             ],
                         ],
@@ -444,15 +481,44 @@ desired effect
 
 
 <script>
-    $("#item-branch_id").change(function(){
-        var id =document.getElementById("item-branch_id").value;
+    $("#departmentmoduleactivity-module_activity_id").change(function(){
+        var id =document.getElementById("departmentmoduleactivity-module_activity_id").value;
         //alert(id);
-        $.get("<?php echo Yii::$app->urlManager->createUrl(['department/filter','id'=>'']);?>"+id,function(data) {
-
+        $.get("<?php echo Yii::$app->urlManager->createUrl(['module-activity/filter','id'=>'']);?>"+id,function(data) {
             //alert(data);
-            $("#item-department_id").html(data);
+            document.getElementById("departmentmoduleactivity-activity_module").value=data;
+            document.getElementById("departmentmoduleactivity-related_module").value=data;
 
         });
     });
 
 </script>
+
+
+<script>
+    $("#customercase-related_module").change(function(){
+        var id =document.getElementById("customercase-related_module").value;
+        //alert(id);
+        $.get("<?php echo Yii::$app->urlManager->createUrl(['system-module/filter','id'=>'']);?>"+id,function(data) {
+
+            //alert(data);
+            $("#customercase-related_activity").html(data);
+
+
+        });
+    });
+
+
+    window.onload = function() {
+        var id ='KCB';
+        //alert(id);
+        $.get("<?php echo Yii::$app->urlManager->createUrl(['customer-case/reference','id'=>'']);?>"+id,function(data) {
+
+            //alert(data);
+            document.getElementById("customercase-case_number").value=data;
+
+        });
+    };
+</script>
+
+

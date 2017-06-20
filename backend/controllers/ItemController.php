@@ -175,11 +175,11 @@ class ItemController extends Controller
             }
         }
         else {
-
-
             return $this->render('create', [
                 'subitems' => (empty($subitems)) ? [new SubItem()] : $subitems, 'model' => $model
             ]);
+
+
         }
     }
 
