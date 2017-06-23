@@ -64,9 +64,15 @@ class CaseHistoryController extends Controller
     public function actionCreate()
     {
         $model = new CaseHistory();
+        $model->date=date('Y-m-d');
+        $model->maker_id=Yii::$app->user->identity->username;
+        $model->maker_time=date('Y-m-d:h:i:s');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            //print_r($model);
+            //exit;
+
+            return $this->redirect(['customer-case/view', 'id' => $model->case_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,

@@ -27,6 +27,9 @@ class Customer extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    const SCENARIO_CREATE = 'create';
+
     public static function tableName()
     {
         return 'tbl_customer';
@@ -43,9 +46,15 @@ class Customer extends \yii\db\ActiveRecord
             [['maker_time'], 'safe'],
             [['customer_number', 'name', 'account_1', 'account_2', 'phone_1', 'phone_2', 'email', 'maker_id'], 'string', 'max' => 200],
             [['status'], 'string', 'max' => 1],
-            [['account_1'], 'unique'],
-            [['account_2'], 'unique'],
+
         ];
+    }
+
+    public function scenarios()
+    {
+        $scenarios = parent::scenarios();
+        $scenarios['create'] = ['customer_number','name', 'account_1', 'account_2', 'phone_1', 'phone_2', 'email', 'address','status','maker_id','maker_time'];
+        return $scenarios;
     }
 
     /**

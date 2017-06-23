@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\SubItem */
+/* @var $model backend\models\CaseStatus */
 
-$this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sub Items'), 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Case Statuses'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sub-item-view">
+<div class="case-status-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -29,11 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'title',
-            'description',
-            'item_id',
-            'maker_id',
-            'maker_time',
+            'status_name',
+            'type',
         ],
     ]) ?>
 

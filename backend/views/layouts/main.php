@@ -6,8 +6,7 @@
 
 use yii\helpers\Html;
 use common\widgets\Alert;
-use backend\models\Cart;
-use backend\models\Inventory;
+use yii\helpers\Url;
 
 yiister\adminlte\assets\Asset::register($this);
 
@@ -23,6 +22,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <!-- Tell the browser to be responsive to screen width -->
@@ -73,9 +73,9 @@ desired effect
         <!-- Logo -->
         <a href="/" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini"><b>CRM</b></span>
+            <span class="logo-mini"><b>QR5.0</b></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>CRM</b></span>
+            <span class="logo-lg"><b>QR5.0</b></span>
         </a>
 
         <!-- Header Navbar -->
@@ -213,13 +213,30 @@ desired effect
                                 "url" =>  "#",
                                 "icon" => "fa fa-folder-o",
                                 "items" => [
-
                                     [
-                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
-                                    "label" => "New Case",
-                                    "url" => ["/customer-case/create"],
-                                    "icon" => "fa fa-lightbulb-o",
+                                        'visible' => yii::$app->User->can('Level0')|| yii::$app->User->can('admin'),
+                                        "label" => "New Case",
+                                        "url" => ["/customer-case/create"],
+                                        "icon" => "fa fa-lightbulb-o",
                                     ],
+                                    [
+                                        'visible' => yii::$app->User->can('Level5')|| yii::$app->User->can('admin'),
+                                        "label" => "Pending Cases",
+                                        "url" => ["/customer-case/index"],
+                                        "icon" => "fa fa-server",
+                                    ],
+                                    [
+                                        'visible' => yii::$app->User->can('Level0') || yii::$app->User->can('Level5')|| yii::$app->User->can('admin'),
+                                        "label" => "My Cases",
+                                        "url" => ["/customer-case/pending"],
+                                        "icon" => "fa fa-server",
+                                    ],
+                                    [       'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                            "label" =>Yii::t('app','Case Settings'),
+                                            "url" =>  Yii::$app->homeUrl,
+                                            "icon" => "fa fa-gear",
+                                    "items" => [
+
                                     [
                                     'visible' => (Yii::$app->user->identity->username == 'admin'),
                                     "label" => "Case Sources",
@@ -240,6 +257,8 @@ desired effect
                                     ],
 
                                 ],
+                                        ],
+                                    ],
 
                         ],
 
@@ -250,17 +269,12 @@ desired effect
                             "icon" => "fa fa-gears",
                             "items" => [
 
+
                                 [
                                     'visible' => (Yii::$app->user->identity->username == 'admin'),
-                                    "label" => "System Activities",
-                                    "url" => ["/module-activity/index"],
-                                    "icon" => "fa fa-user",
-                                ],
-                                [
-                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
-                                    "label" => "System Modules",
-                                    "url" => ["/system-module/index"],
-                                    "icon" => "fa fa-user",
+                                    "label" => "Case Statuses",
+                                    "url" => ["/case-status/index"],
+                                    "icon" => "fa fa-lock",
                                 ],
                                 [
                                     'visible' => (Yii::$app->user->identity->username == 'admin'),
@@ -306,6 +320,18 @@ desired effect
                                     'label' => Yii::t('app', 'Manage User Roles'),
                                     'url' => ['/role/index'],
                                     'icon' => 'fa fa-lock',
+                                ],
+                                [
+                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                    "label" => "System Activities",
+                                    "url" => ["/module-activity/index"],
+                                    "icon" => "fa fa-user",
+                                ],
+                                [
+                                    'visible' => (Yii::$app->user->identity->username == 'admin'),
+                                    "label" => "System Modules",
+                                    "url" => ["/system-module/index"],
+                                    "icon" => "fa fa-user",
                                 ],
 
 
@@ -508,6 +534,73 @@ desired effect
         });
     });
 
+    $("#customercase-related_activity").change(function(){
+        var id =document.getElementById("customercase-related_activity").value;
+        //alert(id);
+        $.get("<?php echo Yii::$app->urlManager->createUrl(['department-module-activity/filter','id'=>'']);?>"+id,function(data) {
+
+            //alert(data);
+            $("#customercase-assigned_to").html(data);
+
+
+        });
+
+        $.get("<?php echo Yii::$app->urlManager->createUrl(['department-module-activity/department','id'=>'']);?>"+id,function(data) {
+
+            //alert(data);
+            document.getElementById("customercase-related_department").value=data;
+
+
+
+        });
+
+        $.get("<?php echo Yii::$app->urlManager->createUrl(['department-module-activity/filter-department','id'=>'']);?>"+id,function(data) {
+
+            //alert(data);
+            document.getElementById("customercase-department_related").value=data;
+
+
+
+        });
+
+
+    });
+
+    $("#customer-id").click(function(){
+        var id =document.getElementById("customercase-customer_number").value;
+        //alert(id);
+        theUrl='http://localhost/mkopo/index.php?r=customer/get-customer&id='+id;
+        //theUrl='http://demo.vikobafeta.or.tz/index.php?r=customer/get-customer&id='+id;
+        //alert(theUrl);
+        var xmlHttp = new XMLHttpRequest();
+        xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+        xmlHttp.send( null );
+           // alert(xmlHttp.responseText);
+
+        var myObj = JSON.parse(xmlHttp.responseText);
+                // No parsing necessary with JSON!
+    if(xmlHttp.responseText == "Undefined") {
+
+        document.getElementById("customer-phone_1").value = "";
+        document.getElementById("customer-name").value = "";
+        document.getElementById("customer-address").value = "";
+        document.getElementById("customer-customer_number").value = "";
+        document.getElementById("customer-email").value ="";
+
+
+    }else{
+        document.getElementById("customer-phone_1").value = myObj.data.mobile_no1;
+        document.getElementById("customer-name").value = myObj.data.first_name + " " + myObj.data.last_name;
+        document.getElementById("customer-address").value = myObj.data.address;
+        document.getElementById("customer-customer_number").value = myObj.data.customer_no;
+        document.getElementById("customer-email").value = myObj.data.email;
+    }
+
+    });
+
+
+
+
 
     window.onload = function() {
         var id ='KCB';
@@ -519,6 +612,20 @@ desired effect
 
         });
     };
+
+
+    $("#reassign-user").click(function(){
+        var id =document.getElementById("case-id").value;
+        var id1 =document.getElementById("customercase-assigned_to").value;
+        //alert(id);
+        $.get("<?php echo Yii::$app->urlManager->createUrl(['customer-case/reassign','id'=>'']);?>"+"&id="+id+"&id1="+id1,function(data) {
+
+            //alert(data);
+            //document.getElementById("customercase-case_number").value=data;
+
+        });
+    });
+
 </script>
 
 

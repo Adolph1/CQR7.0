@@ -83,4 +83,14 @@ class Department extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Department::className(), ['id' => 'parent']);
     }
+    public static function getName($id)
+    {
+        $emp=Department::findOne($id);
+        if($emp!=null){
+            return $emp->dept_name;
+        }
+        else{
+            return "";
+        }
+    }
 }

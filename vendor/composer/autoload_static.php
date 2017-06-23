@@ -36,6 +36,7 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
         's' => 
         array (
             'spanjeta\\modules\\backup\\' => 24,
+            'sjaakp\\gcharts\\' => 15,
         ),
         'r' => 
         array (
@@ -169,6 +170,10 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
         'spanjeta\\modules\\backup\\' => 
         array (
             0 => __DIR__ . '/..' . '/spanjeta/yii2-backup',
+        ),
+        'sjaakp\\gcharts\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sjaakp/yii2-gcharts',
         ),
         'rmrevin\\yii\\fontawesome\\' => 
         array (

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\jui\AutoComplete;
+use yii\web\JsExpression;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\CustomerCase */
@@ -12,12 +14,54 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
-        <div class="col-md-10 text-center">
-            <?= $form->field($model, 'customer_number')->textInput(['placeholder'=>'Search Customer'])->label(false) ?>
+        <div class="col-md-8 text-center">
+            <?php
+
+            $data = \backend\models\Customer::find()
+                ->select(['name as value', 'name as  label','id as id'])
+                ->asArray()
+                ->all();
+
+            //echo 'Product Name' .'<br>';
+            echo AutoComplete::widget([
+                'options'=>[
+                    'placeholder'=>'Enter customer number',
+                    'class'=>'col-md-12',
+                    'style'=>'padding:6px',
+                    'id'=>'customercase-customer_number',
+                ],
+                'clientOptions' => [
+                    'source' => $data,
+                    'minLength'=>'3',
+                    'autoFill'=>true,
+                    'select' => new JsExpression("function( event, ui ) {
+                    
+                    $('#memberssearch-family_name_id').val(ui.item.id);
+                    var id=ui.item.id;
+                    alert(ui.item.id);
+                   // $('#prod-id').html(id);
+                      $.get('".Yii::$app->urlManager->createUrl(['customer/get-customer','id'=>''])."'+id,function(data) {
+                    
+                    if(data){
+                        window.location.reload(true);
+                        }
+
+                     });
+     
+                 }")],
+            ]);
+            ?>
+            <?= Html::activeHiddenInput($model, 'customer_name',['id'=>'prd-id'])?>
+
         </div>
-         <div class="col-md-2 col-sm-2 col-xs-2 pull-right">
-                    <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '<i class="fa fa-save"></i>') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success ' : 'btn btn-primary btn-block']) ?>
-        </div>
+        <div class="col-md-2">
+            <?= Html::Button(Yii::t('app', '<i class="fa fa-search"></i> Get Customer'), [
+                'class' => 'btn btn-default btn-block',
+                'value'=> 'Get Customer',
+                'id'=>'customer-id',
+                'name' => 'submit',
+            ]) ?></div>
+
     </div>
     <legend class="scheduler-border" style="color:#005DAD">Case details</legend>
 <div class="row">
@@ -26,7 +70,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'title')->textInput(['maxlength' => true,'placeholder'=>'Enter case title']) ?>
     </div>
     <div class="col-md-2">
-        <?= $form->field($model, 'case_number')->textInput(['readonly'=>'readonly']) ?>
+        <?=$model->isNewRecord ? $form->field($model, 'case_number')->textInput() : $form->field($model, 'case_number')->textInput(['value'=>$model->case_number,'readonly'=>'readonly','id'=>'casenumber'])?>
     </div>
         <div class="col-md-2">
             <?= $form->field($model, 'reported_date')->textInput(['readonly'=>'readonly','value'=>date('Y-m-d')]) ?>
@@ -46,7 +90,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'related_module')->dropDownList(\backend\models\SystemModule::getAll(),['prompt'=>Yii::t('app','--Module--')])->label(false) ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'related_activity')->dropDownList(['prompt'=>Yii::t('app','--Activity--')])->label(false) ?>
+            <?=$model->isNewRecord ? $form->field($model, 'related_activity')->dropDownList(['prompt'=>Yii::t('app','--Activity--')])->label(false) : $form->field($model, 'related_activity')->dropDownList(\backend\models\ModuleActivity::getAll(),['prompt'=>Yii::t('app','--Activity--')])->label(false)?>
         </div>
 
         <div class="col-md-4">
@@ -76,7 +120,7 @@ use yii\widgets\ActiveForm;
     </div>
         <div class="row">
             <div class="col-md-12">
-                <?= $form->field($model, 'assigned_to')->dropDownList(\backend\models\Employee::getAll(),['prompt'=>Yii::t('app','--Assign To--')])->label(false) ?>
+                <?=$model->isNewRecord ? $form->field($model, 'assigned_to')->dropDownList(['prompt'=>Yii::t('app','--Activity--')])->label(false) : $form->field($model, 'assigned_to')->dropDownList(\backend\models\Employee::getAll(),['prompt'=>Yii::t('app','--Activity--')])->label(false)?>
             </div>
         </div>
     </div>
@@ -89,7 +133,8 @@ use yii\widgets\ActiveForm;
         </div>
             <div class="row">
                 <div class="col-md-12">
-            <?= $form->field($model, 'assigned_to')->textInput()->label(false) ?>
+            <?= $form->field($model, 'related_department')->hiddenInput()->label(false) ?>
+            <?= $form->field($model, 'department_related')->textInput(['placeholder'=>'related department','readonly'=>'readonly'])->label(false) ?>
                 </div>
             </div>
         </div>
@@ -128,6 +173,11 @@ use yii\widgets\ActiveForm;
             <?= $form->field($customer, 'email')->textInput(['maxlength' => true,'readonly'=>'readonly']) ?>
                 </div>
             </div>
+            <div class="row">
+            <div class="col-md-4 col-sm-4 col-xs-4 pull-right">
+                <?= Html::submitButton($model->isNewRecord ? Yii::t('app', '<i class="fa fa-save"></i>') : Yii::t('app', '<i class="fa fa-save"></i> Update'), ['class' => $model->isNewRecord ? 'btn btn-success btn-block' : 'btn btn-primary']) ?>
+            </div>
+            </div>
         </div>
     </div>
 
@@ -138,18 +188,3 @@ use yii\widgets\ActiveForm;
 
 </div>
 
-<script>
-    $(document).ready(function(){
-        var id ='KCB';
-        alert(id);
-        $.get("<?php echo Yii::$app->urlManager->createUrl(['customer-case/reference','id'=>'']);?>"+id,function(data) {
-
-            //alert(data);
-            $("#expenditure-type").html(data);
-
-        });
-    });
-
-
-
-</script>

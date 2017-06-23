@@ -138,4 +138,14 @@ class User extends \common\models\User
         return false;
     }
 
+    public static function getEmailID($id)
+    {
+        $emp=User::find()->where(['emp_id'=>$id])->one();
+        if($emp!=null){
+            return $emp->email;
+        }
+        else{
+            return "";
+        }
+    }
 }

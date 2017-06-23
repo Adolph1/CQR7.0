@@ -62,4 +62,14 @@ class CaseHistory extends \yii\db\ActiveRecord
     {
         return $this->hasOne(CustomerCase::className(), ['id' => 'case_id']);
     }
+
+    public static function getHistory($id)
+    {
+        $model=CaseHistory::find()->where(['case_id'=>$id])->all();
+        if($model!=null){
+            return $model;
+        }else{
+            return "";
+        }
+    }
 }

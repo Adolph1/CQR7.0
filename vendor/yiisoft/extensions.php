@@ -219,4 +219,13 @@ return array (
       '@kartik/grid' => $vendorDir . '/kartik-v/yii2-grid',
     ),
   ),
+  'sjaakp/yii2-gcharts' => 
+  array (
+    'name' => 'sjaakp/yii2-gcharts',
+    'version' => '1.0.0.0',
+    'alias' => 
+    array (
+      '@sjaakp/gcharts' => $vendorDir . '/sjaakp/yii2-gcharts',
+    ),
+  ),
 );

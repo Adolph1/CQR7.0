@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use backend\models\Department;
+use backend\models\Employee;
 use backend\models\ModuleActivity;
 use Yii;
 use backend\models\DepartmentModuleActivity;
@@ -113,6 +115,68 @@ class DepartmentModuleActivityController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+//gets all employees in which the activity is connected with respect to their departments
+    public function actionFilter($id)
+    {
+
+        $countActivities = DepartmentModuleActivity::find()
+            ->where(['module_activity_id' => $id])
+            ->count();
+
+        $activities = DepartmentModuleActivity::find()
+            ->where(['module_activity_id' => $id])
+            ->all();
+
+        if ($countActivities > 0) {
+            foreach ($activities as $activity) {
+                $countemployees = Employee::find()
+                    ->where(['department_id' => $activity->department_id])
+                    ->count();
+                $employees = Employee::find()
+                    ->where(['department_id' => $activity->department_id])
+                    ->all();
+                if ($countemployees > 0) {
+                    echo "<option value=''>" . "--Select--" . "</option>";
+                    foreach ($employees as $employee) {
+                        echo "<option value='" . $employee->id . "'>" . $employee->first_name.' '.$employee->last_name . "</option>";
+                    }
+                }
+                else {
+                    echo "<option value=''>" . "--Select--" . "</option>";
+                }
+            }
+        } else {
+            echo "<option value=''>" . "--Select--" . "</option>";
+        }
+
+    }
+
+    public function actionFilterDepartment($id)
+    {
+
+        $department = DepartmentModuleActivity::find()
+            ->where(['module_activity_id' => $id])
+            ->one();
+
+        if ($department!=null) {
+            echo Department::getName($department->department_id);
+        }
+
+    }
+
+    public function actionDepartment($id)
+    {
+
+        $department = DepartmentModuleActivity::find()
+            ->where(['module_activity_id' => $id])
+            ->one();
+
+        if ($department!=null) {
+            echo $department->department_id;
+        }
+
     }
 
     /**

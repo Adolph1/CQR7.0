@@ -98,6 +98,10 @@ class Employee extends \yii\db\ActiveRecord
         }
     }
 
+
+
+
+
     public static function getAll()
     {
         return ArrayHelper::map(Employee::find()->all(), 'id', function($model, $defaultValue) {

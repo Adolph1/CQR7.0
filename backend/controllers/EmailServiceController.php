@@ -3,19 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Customer;
-use backend\models\CustomerSearch;
+use backend\models\EmailService;
+use backend\models\EmailServiceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Url;
 
 /**
- * CustomerController implements the CRUD actions for Customer model.
+ * EmailServiceController implements the CRUD actions for EmailService model.
  */
-class CustomerController extends Controller
+class EmailServiceController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -32,12 +30,12 @@ class CustomerController extends Controller
     }
 
     /**
-     * Lists all Customer models.
+     * Lists all EmailService models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CustomerSearch();
+        $searchModel = new EmailServiceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +45,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Displays a single Customer model.
+     * Displays a single EmailService model.
      * @param integer $id
      * @return mixed
      */
@@ -59,13 +57,13 @@ class CustomerController extends Controller
     }
 
     /**
-     * Creates a new Customer model.
+     * Creates a new EmailService model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Customer();
+        $model = new EmailService();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,23 +74,8 @@ class CustomerController extends Controller
         }
     }
 
-    public function actionGetCustomer($id)
-    {
-        $customer=Customer::find()->where(['id'=>trim($id)])->one();
-        if($customer!=null) {
-            return $customer;
-        }
-        else{
-            return " ";
-        }
-
-    }
-
-
-
-
     /**
-     * Updates an existing Customer model.
+     * Updates an existing EmailService model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -110,9 +93,8 @@ class CustomerController extends Controller
         }
     }
 
-
     /**
-     * Deletes an existing Customer model.
+     * Deletes an existing EmailService model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -125,15 +107,15 @@ class CustomerController extends Controller
     }
 
     /**
-     * Finds the Customer model based on its primary key value.
+     * Finds the EmailService model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Customer the loaded model
+     * @return EmailService the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Customer::findOne($id)) !== null) {
+        if (($model = EmailService::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

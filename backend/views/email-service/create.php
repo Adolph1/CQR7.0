@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\SubItem */
+/* @var $model backend\models\EmailService */
 
-$this->title = Yii::t('app', 'Create Sub Item');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Sub Items'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Email Service');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Email Services'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sub-item-create">
+<div class="email-service-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

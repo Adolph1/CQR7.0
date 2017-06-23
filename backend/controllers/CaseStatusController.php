@@ -3,19 +3,17 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Customer;
-use backend\models\CustomerSearch;
+use backend\models\CaseStatus;
+use backend\models\CaseStatusSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Url;
 
 /**
- * CustomerController implements the CRUD actions for Customer model.
+ * CaseStatusController implements the CRUD actions for CaseStatus model.
  */
-class CustomerController extends Controller
+class CaseStatusController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -32,12 +30,12 @@ class CustomerController extends Controller
     }
 
     /**
-     * Lists all Customer models.
+     * Lists all CaseStatus models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CustomerSearch();
+        $searchModel = new CaseStatusSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -47,7 +45,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Displays a single Customer model.
+     * Displays a single CaseStatus model.
      * @param integer $id
      * @return mixed
      */
@@ -59,13 +57,13 @@ class CustomerController extends Controller
     }
 
     /**
-     * Creates a new Customer model.
+     * Creates a new CaseStatus model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Customer();
+        $model = new CaseStatus();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,23 +74,8 @@ class CustomerController extends Controller
         }
     }
 
-    public function actionGetCustomer($id)
-    {
-        $customer=Customer::find()->where(['id'=>trim($id)])->one();
-        if($customer!=null) {
-            return $customer;
-        }
-        else{
-            return " ";
-        }
-
-    }
-
-
-
-
     /**
-     * Updates an existing Customer model.
+     * Updates an existing CaseStatus model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -110,9 +93,8 @@ class CustomerController extends Controller
         }
     }
 
-
     /**
-     * Deletes an existing Customer model.
+     * Deletes an existing CaseStatus model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -125,15 +107,15 @@ class CustomerController extends Controller
     }
 
     /**
-     * Finds the Customer model based on its primary key value.
+     * Finds the CaseStatus model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Customer the loaded model
+     * @return CaseStatus the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Customer::findOne($id)) !== null) {
+        if (($model = CaseStatus::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

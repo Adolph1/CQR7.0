@@ -4,23 +4,21 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\SubItem */
+/* @var $model backend\models\EmailService */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="sub-item-form">
+<div class="email-service-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'from')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'to')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'item_id')->textInput() ?>
+    <?= $form->field($model, 'message')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'maker_id')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'maker_time')->textInput() ?>
+    <?= $form->field($model, 'time_sent')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

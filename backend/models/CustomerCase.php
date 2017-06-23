@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use Codeception\Subscriber\Module;
 use Yii;
 
 /**
@@ -36,6 +37,17 @@ class CustomerCase extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $customer_name;
+    public $total;
+    public $department_related;
+    const OPENED=1;
+    const CLOSED=2;
+    const ASSIGN=3;
+    const REASSIGN=4;
+    const REOPENED=8;
+    const UPDATED=9;
+
     public static function tableName()
     {
         return 'tbl_customer_case';
@@ -48,11 +60,10 @@ class CustomerCase extends \yii\db\ActiveRecord
     {
         return [
             [['title', 'source'], 'required'],
-            [['source', 'type', 'priority', 'customer_number', 'related_activity', 'related_module', 'related_department', 'assigned_to', 'escalation_hours'], 'integer'],
-            [['description'], 'string'],
+            [['source', 'type', 'priority', 'related_activity', 'related_module', 'related_department', 'assigned_to', 'escalation_hours','status','assign_status','update_status'], 'integer'],
+            [['description','case_number','delete_status'], 'string'],
             [['escalation_time', 'maker_time'], 'safe'],
             [['title', 'reported_date', 'maker_id'], 'string', 'max' => 200],
-            [['status'], 'string', 'max' => 1],
             [['customer_number'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_number' => 'id']],
             [['type'], 'exist', 'skipOnError' => true, 'targetClass' => CasePriority::className(), 'targetAttribute' => ['type' => 'id']],
             [['source'], 'exist', 'skipOnError' => true, 'targetClass' => CaseSource::className(), 'targetAttribute' => ['source' => 'id']],
@@ -80,6 +91,9 @@ class CustomerCase extends \yii\db\ActiveRecord
             'assigned_to' => Yii::t('app', 'Assigned To'),
             'escalation_hours' => Yii::t('app', 'Escalation Hours'),
             'escalation_time' => Yii::t('app', 'Escalation Time'),
+            'assign_status'=>Yii::t('app', 'Assign Status'),
+            'update_status'=>Yii::t('app', 'Update Status'),
+            'delete_status'=>Yii::t('app', 'Delete Status'),
             'status' => Yii::t('app', 'Status'),
             'maker_id' => Yii::t('app', 'Maker ID'),
             'maker_time' => Yii::t('app', 'Maker Time'),
@@ -124,5 +138,45 @@ class CustomerCase extends \yii\db\ActiveRecord
     public function getType1()
     {
         return $this->hasOne(CaseType::className(), ['id' => 'type']);
+    }
+
+    public function getModuleActivity()
+    {
+        return $this->hasOne(ModuleActivity::className(), ['id' => 'related_activity']);
+    }
+
+    public function getModule()
+    {
+        return $this->hasOne(SystemModule::className(), ['id' => 'related_module']);
+    }
+    public function getEmployee()
+    {
+        return $this->hasOne(Employee::className(), ['id' => 'assigned_to']);
+    }
+
+    public function getDepartment()
+    {
+        return $this->hasOne(Department::className(), ['id' => 'related_department']);
+    }
+    public function getStatusName()
+    {
+        return $this->hasOne(CaseStatus::className(), ['id' => 'status']);
+    }
+
+    public static function getLatest()
+    {
+        $countnew = CustomerCase::find()
+            ->where(['status'=>0])
+            ->count();
+        $getnews = CustomerCase::find()
+            //->where(['!=','status','D'])
+            ->orderBy('id DESC')
+            ->limit(5)
+            ->all();
+        if($countnew!=null){
+            return $getnews;
+        }else{
+            return "";
+        }
     }
 }
