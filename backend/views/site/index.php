@@ -124,6 +124,9 @@ use sjaakp\gcharts\LineChart;
                             }elseif($getnew->status==\backend\models\CustomerCase::CLOSED){
                                 $getnew->status='Closed';
                             }
+                            elseif($getnew->status==\backend\models\CustomerCase::REOPENED){
+                                $getnew->status='Reopened';
+                            }
                             echo '<tr>
                         <td>'.$getnew->reported_date.'</td>
                         <td>'.$getnew->title.'</td>

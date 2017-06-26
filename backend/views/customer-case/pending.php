@@ -88,15 +88,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'escalation_hours',
             'escalation_time',
             [
-                    'attribute'=>'status',
-                    'value'=>function($model){
+                'attribute'=>'status',
+                'value'=>function($model){
                     if($model->status==\backend\models\CustomerCase::OPENED){
                         return "Opened";
                     }elseif ($model->status==\backend\models\CustomerCase::CLOSED){
                         return "Closed";
                     }
-
+                    elseif ($model->status==\backend\models\CustomerCase::REOPENED){
+                        return "Reopened";
                     }
+
+                }
             ],
 
             [

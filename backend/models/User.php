@@ -148,4 +148,18 @@ class User extends \common\models\User
             return "";
         }
     }
+
+    public static function getUserIDByEmail($id)
+    {
+        $emp=User::find()->where(['email'=>$id])->one();
+        if($emp!=null){
+            return $emp->emp_id;
+        }
+        else{
+            return "";
+        }
+    }
+
+
+
 }

@@ -98,10 +98,7 @@ use yii\bootstrap\Modal;
             <?= Html::a(Yii::t('app', '<i class="fa fa-lock"></i> Close'), ['close', 'id' => $model->id],
                 [
                     'class' =>Yii::$app->user->can('Level0') && $model->status!=\backend\models\CustomerCase::CLOSED? 'btn btn-default enabled btn-block':'btn btn-default disabled btn-block',
-                    'data' => [
-                        'confirm' => Yii::t('app', 'Are you sure you want to close this item?'),
-                        'method' => 'post',
-                    ],
+
                 ]);
               ?>
         </div>

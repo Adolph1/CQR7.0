@@ -93,6 +93,9 @@ $this->title = Yii::t('app', 'Customer Cases');
                     }elseif ($model->status==\backend\models\CustomerCase::CLOSED){
                         return "Closed";
                     }
+                    elseif ($model->status==\backend\models\CustomerCase::REOPENED){
+                        return "Reopened";
+                    }
 
                 }
             ],

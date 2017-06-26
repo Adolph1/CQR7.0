@@ -228,4 +228,40 @@ return array (
       '@sjaakp/gcharts' => $vendorDir . '/sjaakp/yii2-gcharts',
     ),
   ),
+  'toriphes/yii2-console-runner' => 
+  array (
+    'name' => 'toriphes/yii2-console-runner',
+    'version' => '1.0.0.0',
+    'alias' => 
+    array (
+      '@toriphes/console' => $vendorDir . '/toriphes/yii2-console-runner',
+    ),
+  ),
+  'vova07/yii2-console-runner-extension' => 
+  array (
+    'name' => 'vova07/yii2-console-runner-extension',
+    'version' => '0.1.0.0',
+    'alias' => 
+    array (
+      '@vova07/console' => $vendorDir . '/vova07/yii2-console-runner-extension',
+    ),
+  ),
+  'yii2tech/crontab' => 
+  array (
+    'name' => 'yii2tech/crontab',
+    'version' => '1.0.2.0',
+    'alias' => 
+    array (
+      '@yii2tech/crontab' => $vendorDir . '/yii2tech/crontab',
+    ),
+  ),
+  'kartik-v/yii2-social' => 
+  array (
+    'name' => 'kartik-v/yii2-social',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@kartik/social' => $vendorDir . '/kartik-v/yii2-social',
+    ),
+  ),
 );

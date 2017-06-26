@@ -7,6 +7,8 @@
 use yii\helpers\Html;
 use common\widgets\Alert;
 use yii\helpers\Url;
+use kartik\social\FacebookPlugin;
+
 
 yiister\adminlte\assets\Asset::register($this);
 
@@ -88,34 +90,6 @@ desired effect
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    <!-- Languages: style can be found in dropdown.less-->
-                    <li class="dropdown messages-menu">
-                        <!-- Menu toggle button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-flag"></i>
-
-                        </a>
-                        <ul class="dropdown-menu">
-
-                            <li>
-                                <!-- inner menu: contains the messages -->
-                                <ul class="menu">
-                                    <?php
-                                    /*$languages=\backend\models\Language::getAll();
-                                    foreach ($languages as $language)
-                                    {
-                                        echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" ><li style="padding: 10px" id="language">
-                                                <i class="fa fa-angle-double-right"></i>
-                                            '.$language->title.'
-                                            </li></a>';
-                                    }*/
-                                    ?>
-                                </ul><!-- /.menu -->
-                            </li>
-
-                        </ul>
-                    </li><!-- /.Languages-menu -->
-
 
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
@@ -178,26 +152,6 @@ desired effect
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
 
-            <!-- Sidebar user panel (optional) -->
-            <div class="user-panel">
-                <div class="pull-left image">
-                    <img src="http://placehold.it/45x45" class="img-circle" alt="User Image">
-                </div>
-                <div class="pull-left info">
-                    <p><?php
-                        if (!Yii::$app->user->isGuest) {
-                            echo Yii::$app->user->identity->username;
-                        ?>
-
-                        <?php }?>
-                    </p>
-                    <!-- Status -->
-                    <?php
-                    if (!Yii::$app->user->isGuest) {?>
-                    <p style="color: green"><small><?php //  \backend\models\AuthItem::getRoleName(\backend\models\AuthAssignment::getRoleByUserId($user_id));?> @ <?php // \backend\models\Branch::getBranchName(\backend\models\Employee::getBranchID(Yii::$app->user->identity->emp_id));?></small></p>
-                <?php }?>
-                </div>
-            </div>
 
             <!-- Sidebar Menu -->
             <?php if (!Yii::$app->user->isGuest) {?>
@@ -383,7 +337,8 @@ desired effect
             Powered by Erico
         </div>
         <!-- Default to the left -->
-        <strong>Copyright &copy; KCB Group <?= date("Y") ?>
+        <strong>Copyright &copy; KCB Group <?= date("Y") ?></strong>
+        <?php // echo FacebookPlugin::widget(['appId'=>'mwakalingaadolph']);?>
     </footer>
 
     <!-- Control Sidebar -->

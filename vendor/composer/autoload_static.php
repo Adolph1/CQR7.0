@@ -10,6 +10,7 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        'c65d09b6820da036953a371c8c73a9b1' => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook/polyfills.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         '180092cfc969a12e06f2132a203a3184' => __DIR__ . '/..' . '/codeception/verify/src/Codeception/function.php',
     );
@@ -28,10 +29,19 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
             'yii\\composer\\' => 13,
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
+            'yii2tech\\crontab\\' => 17,
         ),
         'w' => 
         array (
             'wbraganca\\dynamicform\\' => 22,
+        ),
+        'v' => 
+        array (
+            'vova07\\console\\' => 15,
+        ),
+        't' => 
+        array (
+            'toriphes\\console\\' => 17,
         ),
         's' => 
         array (
@@ -53,6 +63,7 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
         'k' => 
         array (
             'kartik\\spinner\\' => 15,
+            'kartik\\social\\' => 14,
             'kartik\\popover\\' => 15,
             'kartik\\plugins\\popover\\' => 23,
             'kartik\\grid\\' => 12,
@@ -106,6 +117,7 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
         'F' => 
         array (
             'Faker\\' => 6,
+            'Facebook\\' => 9,
         ),
         'D' => 
         array (
@@ -163,9 +175,21 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
         ),
+        'yii2tech\\crontab\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yii2tech/crontab',
+        ),
         'wbraganca\\dynamicform\\' => 
         array (
             0 => __DIR__ . '/..' . '/wbraganca/yii2-dynamicform',
+        ),
+        'vova07\\console\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vova07/yii2-console-runner-extension',
+        ),
+        'toriphes\\console\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/toriphes/yii2-console-runner',
         ),
         'spanjeta\\modules\\backup\\' => 
         array (
@@ -192,6 +216,10 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
         'kartik\\spinner\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-widget-spinner',
+        ),
+        'kartik\\social\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/yii2-social',
         ),
         'kartik\\popover\\' => 
         array (
@@ -296,6 +324,10 @@ class ComposerStaticInita76639f345e92c90ef793ee2927cfb33
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fzaninotto/faker/src/Faker',
+        ),
+        'Facebook\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/facebook/graph-sdk/src/Facebook',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

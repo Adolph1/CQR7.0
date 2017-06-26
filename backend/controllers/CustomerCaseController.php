@@ -1,10 +1,10 @@
 <?php
 
 namespace backend\controllers;
+use vova07\console\ConsoleRunner;
 
 use backend\models\CaseHistory;
 use backend\models\Customer;
-use backend\models\Department;
 use backend\models\Employee;
 use backend\models\User;
 use common\models\LoginForm;
@@ -15,6 +15,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use backend\models\ReferenceIndex;
+use backend\models\EmailLog;
 
 /**
  * CustomerCaseController implements the CRUD actions for CustomerCase model.
@@ -138,23 +139,30 @@ class CustomerCaseController extends Controller
               $model->customer_number=$customer->id;
 
               $model->save();
+              $flag=1;
 
           }else{
               $customer->save();
               $model->customer_number=$customer->id;
               $model->save();
+              $flag=1;
           }
+            if($flag) {
+                $email_log = new EmailLog();
+                $email_log->from = 'crm@tz.kcbgroup.com';
+                $email_log->to = User::getEmailID($model->assigned_to);
+                $email_log->title = 'New Case Logged';
+                $email_log->subject ='New Case Logged with reference '.$model->case_number;
+                $email_log->case_reference_number=$model->case_number;
+                $email_log->message=$model->description;
+                $email_log->status=0;
+                $email_log->save();
 
-          /*
-          $from='crm@tz.kcbgroup.com';
-          $to=User::getEmailID($model->assigned_to);
-          $message='NEW CASE';
-          $body='NEW CASE TESTING';
-          $this->sendEmail($from,$to,$message,$body);*/
 
+                }
             $modelrefid=ReferenceIndex::getIDByRef($model->case_number);
             ReferenceIndex::updateReference($modelrefid);
-            //$customer->save();
+            Yii::$app->consoleRunner->run('email/send-email');
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -226,6 +234,22 @@ class CustomerCaseController extends Controller
         if(!Yii::$app->user->isGuest){
             $model=$this->findModel($id);
             $model->status=CustomerCase::CLOSED;
+            $model->save();
+            return $this->redirect(['view', 'id' => $id]);
+        }
+        else{
+            $model=new LoginForm();
+            return $this->render('site/login',[
+                'model'=>$model,
+            ]);
+        }
+    }
+
+    public function actionReopen($id)
+    {
+        if(!Yii::$app->user->isGuest){
+            $model=$this->findModel($id);
+            $model->status=CustomerCase::REOPENED;
             $model->save();
             return $this->redirect(['view', 'id' => $id]);
         }
@@ -313,8 +337,13 @@ class CustomerCaseController extends Controller
 
 
 
-    public function sendEmail($from,$to,$message,$body)
+    public function SendEmail()
     {
+
+        $from='crm@tz.kcbgroup.com';
+        $to='adolph.cm@gmail.com';
+        $message='NEW CASE';
+        $body='NEW CASE TESTING';
         Yii::$app->mailer->compose()
             ->setFrom($from)
             ->setTo($to)
@@ -322,6 +351,6 @@ class CustomerCaseController extends Controller
             ->setTextBody($body)
             ->setHtmlBody('<b>HTML content</b>')
             ->send();
-
+        return 0;
     }
 }
